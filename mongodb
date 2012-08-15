@@ -1,0 +1,131 @@
+> use mydb
+switched to db mydb
+> db.games.find().forEach(printjson)
+{
+	"_id" : ObjectId("502ad7d46db6f53bef0face7"),
+	"white" : "Player1",
+	"black" : "Player2",
+	"description" : "Championship",
+	"result" : "",
+	"next" : "W",
+	"move" : 2
+}
+> db.moves.find().forEach(printjson)
+{
+	"_id" : ObjectId("502adc9e6db6f53bef0face8"),
+	"game" : ObjectId("502ad7d46db6f53bef0face7"),
+	"white" : "e2-e4",
+	"move" : 1
+}
+{
+	"_id" : ObjectId("502add9b6db6f53bef0face9"),
+	"game" : ObjectId("502ad7d46db6f53bef0face7"),
+	"black" : "e7-e5",
+	"move" : 1
+}
+{
+	"_id" : ObjectId("502addf36db6f53bef0facea"),
+	"game" : ObjectId("502ad7d46db6f53bef0face7"),
+	"white" : "g1-f3",
+	"move" : 2
+}
+{
+	"_id" : ObjectId("502ade4f6db6f53bef0faceb"),
+	"game" : ObjectId("502ad7d46db6f53bef0face7"),
+	"black" : "b8-c6",
+	"move" : 2
+}
+{
+	"_id" : ObjectId("502ade966db6f53bef0facec"),
+	"game" : ObjectId("502ad7d46db6f53bef0face7"),
+	"white" : "f1-b5",
+	"move" : 3
+}
+> 
+
+
+> game = {"white":"Player1","black":"Player2","description":"Championship","result":"","next":"W","move":1}
+{
+	"white" : "Player1",
+	"black" : "Player2",
+	"description" : "Championship",
+	"result" : "",
+	"next" : "W",
+	"move" : 1
+}
+> db.games.find()
+> db.games.save(game)
+> db.games.find()
+{ "_id" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "Player1", "black" : "Player2", "description" : "Championship", "result" : "", "next" : "W", "move" : 1 }
+> db.games.update( {_id:ObjectId("502ad7d46db6f53bef0face7")}, { $set : { next : "B" } } );
+> db.games.find()
+{ "_id" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "Player1", "black" : "Player2", "description" : "Championship", "result" : "", "next" : "B", "move" : 1 }
+> db.games.update( {_id:ObjectId("502ad7d46db6f53bef0face7")}, { $set : { next : "W" }, $inc : { move : 1 } } );
+> db.games.find()
+{ "_id" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "Player1", "black" : "Player2", "description" : "Championship", "result" : "", "next" : "W", "move" : 2 }
+>
+
+
+> db.games.find({_id:ObjectId("502ad7d46db6f53bef0face7")})
+{ "_id" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "Player1", "black" : "Player2", "description" : "Championship", "result" : "", "next" : "W", "move" : 2 }
+> 
+
+
+> db.games.find({_id:ObjectId("502ad7d46db6f53bef0face7")})
+{ "_id" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "Player1", "black" : "Player2", "description" : "Championship", "result" : "", "next" : "W", "move" : 2 }
+> move = {"game" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "e2-e4", "move" : 1 }
+{
+	"game" : ObjectId("502ad7d46db6f53bef0face7"),
+	"white" : "e2-e4",
+	"move" : 1
+}
+> db.moves.save(move)
+> db.moves.find()
+{ "_id" : ObjectId("502adc9e6db6f53bef0face8"), "game" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "e2-e4", "move" : 1 }
+> move = {"game" : ObjectId("502ad7d46db6f53bef0face7"), "black" : "e7-e5", "move" : 1 }
+{
+	"game" : ObjectId("502ad7d46db6f53bef0face7"),
+	"black" : "e7-e5",
+	"move" : 1
+}
+> db.moves.save(move)
+> db.moves.find()
+{ "_id" : ObjectId("502adc9e6db6f53bef0face8"), "game" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "e2-e4", "move" : 1 }
+{ "_id" : ObjectId("502add9b6db6f53bef0face9"), "game" : ObjectId("502ad7d46db6f53bef0face7"), "black" : "e7-e5", "move" : 1 }
+> move = {"game" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "g1-f3", "move" : 2 }
+{
+	"game" : ObjectId("502ad7d46db6f53bef0face7"),
+	"white" : "g1-f3",
+	"move" : 2
+}
+> db.moves.save(move)
+> db.moves.find()
+{ "_id" : ObjectId("502adc9e6db6f53bef0face8"), "game" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "e2-e4", "move" : 1 }
+{ "_id" : ObjectId("502add9b6db6f53bef0face9"), "game" : ObjectId("502ad7d46db6f53bef0face7"), "black" : "e7-e5", "move" : 1 }
+{ "_id" : ObjectId("502addf36db6f53bef0facea"), "game" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "g1-f3", "move" : 2 }
+> move = {"game" : ObjectId("502ad7d46db6f53bef0face7"), "black" : "b8-c6", "move" : 2 }
+{
+	"game" : ObjectId("502ad7d46db6f53bef0face7"),
+	"black" : "b8-c6",
+	"move" : 2
+}
+> db.moves.save(move)
+> db.moves.find()
+{ "_id" : ObjectId("502adc9e6db6f53bef0face8"), "game" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "e2-e4", "move" : 1 }
+{ "_id" : ObjectId("502add9b6db6f53bef0face9"), "game" : ObjectId("502ad7d46db6f53bef0face7"), "black" : "e7-e5", "move" : 1 }
+{ "_id" : ObjectId("502addf36db6f53bef0facea"), "game" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "g1-f3", "move" : 2 }
+{ "_id" : ObjectId("502ade4f6db6f53bef0faceb"), "game" : ObjectId("502ad7d46db6f53bef0face7"), "black" : "b8-c6", "move" : 2 }
+> move = {"game" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "f1-b5", "move" : 3 }
+{
+	"game" : ObjectId("502ad7d46db6f53bef0face7"),
+	"white" : "f1-b5",
+	"move" : 3
+}
+> db.moves.save(move)
+> db.moves.find()
+{ "_id" : ObjectId("502adc9e6db6f53bef0face8"), "game" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "e2-e4", "move" : 1 }
+{ "_id" : ObjectId("502add9b6db6f53bef0face9"), "game" : ObjectId("502ad7d46db6f53bef0face7"), "black" : "e7-e5", "move" : 1 }
+{ "_id" : ObjectId("502addf36db6f53bef0facea"), "game" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "g1-f3", "move" : 2 }
+{ "_id" : ObjectId("502ade4f6db6f53bef0faceb"), "game" : ObjectId("502ad7d46db6f53bef0face7"), "black" : "b8-c6", "move" : 2 }
+{ "_id" : ObjectId("502ade966db6f53bef0facec"), "game" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "f1-b5", "move" : 3 }
+> 
