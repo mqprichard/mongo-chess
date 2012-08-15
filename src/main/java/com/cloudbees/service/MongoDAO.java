@@ -74,7 +74,7 @@ public class MongoDAO {
 			
 			// Insert new game
 			DBObject obj = new BasicDBObject();
-			Game game = new Game("white","black","Championship Match");
+			Game game = new Game("Fischer","Spassky","Championship Match");
 			obj.put("white", game.getWhite());
 			obj.put("black", game.getBlack());
 			obj.put("description", game.getDescription());
@@ -112,6 +112,30 @@ public class MongoDAO {
 			List<DBObject> listMoves = moves.find(findMoves, omits).limit(200).toArray();
 			System.out.println(listMoves.toString());
 
+			// Update game { $set:{next:"B"} }
+			BasicDBObject query = new BasicDBObject();
+			query.put("_id", new ObjectId(idString));
+			BasicDBObject set = new BasicDBObject("$set", new BasicDBObject("next", "B")); 
+			games.update( query, set );
+			
+			// Retrieve game object 
+			searchObject.put("_id", new ObjectId(idString));
+			theGame = games.findOne(searchObject,skipFields);
+			System.out.println(theGame.toString());
+			
+			// Update game { $set:{next:"W"}, $inc:{move : 1} }
+			query = new BasicDBObject();
+			query.put("_id", new ObjectId(idString));
+			BasicDBObject changes = new BasicDBObject();
+			changes.put( "$set", new BasicDBObject("next", "W"));
+			changes.put( "$inc", new BasicDBObject("move", 1));
+			games.update( query, changes );
+			
+			// Retrieve game object 
+			searchObject.put("_id", new ObjectId(idString));
+			theGame = games.findOne(searchObject,skipFields);
+			System.out.println(theGame.toString());
+
 		} 
 		catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -121,8 +145,6 @@ public class MongoDAO {
 		}
 		finally {
 		}
-
-
 	}
 	
 	public String getGame( long id ) {
@@ -150,18 +172,12 @@ public class MongoDAO {
 		return jsonMoves;
 	}
 
-	public String newWhiteMove( Move move ) {
-		String jsonMove = "";
-		return jsonMove;		
-	}
-
-	public String newBlackMove( Move move ) {
+	public String newMove( Move move ) {
 		String jsonMove = "";
 		return jsonMove;		
 	}
 
 	public void disconnect() {
-
 	}
 
 }
