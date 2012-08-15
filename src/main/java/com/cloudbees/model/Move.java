@@ -1,14 +1,14 @@
 package com.cloudbees.model;
 
 public class Move {
-	protected long id;
-	protected long move;
+	protected String id;
 	protected String game;
 	protected String white;
 	protected String black;
+	protected long move;
 
 	public Move() {
-		this.id = 0;
+		this.id = "";
 		this.move = 0;
 		this.game = "";
 		this.white = "";
@@ -16,7 +16,7 @@ public class Move {
 	}
 	
 	public Move(String white, String black, long move, String game){
-		this.id = 0;
+		this.id = "";
 		this.move = move;
 		this.game = game;
 		this.white = white;
@@ -55,7 +55,7 @@ public class Move {
 		this.black = black;
 	}
 
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 

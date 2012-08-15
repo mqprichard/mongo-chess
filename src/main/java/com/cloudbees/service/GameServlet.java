@@ -34,7 +34,6 @@ public class GameServlet extends HttpServlet {
     		statusCode = Response.Status.INTERNAL_SERVER_ERROR;			
 		}
 		finally {
-			dao.disconnect();	
 		}
 
 		if (statusCode != Response.Status.OK)
