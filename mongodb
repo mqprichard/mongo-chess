@@ -43,6 +43,31 @@ switched to db mydb
 }
 > 
 
+> db.moves.find({game:ObjectId("502ad7d46db6f53bef0face7")},{_id:0,game:0}).toArray()
+[
+	{
+		"white" : "e2-e4",
+		"move" : 1
+	},
+	{
+		"black" : "e7-e5",
+		"move" : 1
+	},
+	{
+		"white" : "g1-f3",
+		"move" : 2
+	},
+	{
+		"black" : "b8-c6",
+		"move" : 2
+	},
+	{
+		"white" : "f1-b5",
+		"move" : 3
+	}
+]
+> 
+
 
 > game = {"white":"Player1","black":"Player2","description":"Championship","result":"","next":"W","move":1}
 {
@@ -65,11 +90,9 @@ switched to db mydb
 { "_id" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "Player1", "black" : "Player2", "description" : "Championship", "result" : "", "next" : "W", "move" : 2 }
 >
 
-
-> db.games.find({_id:ObjectId("502ad7d46db6f53bef0face7")})
-{ "_id" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "Player1", "black" : "Player2", "description" : "Championship", "result" : "", "next" : "W", "move" : 2 }
+> db.games.find({_id:ObjectId("502ad7d46db6f53bef0face7")},{_id:0})
+{ "white" : "Player1", "black" : "Player2", "description" : "Championship", "result" : "", "next" : "W", "move" : 2 }
 > 
-
 
 > db.games.find({_id:ObjectId("502ad7d46db6f53bef0face7")})
 { "_id" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "Player1", "black" : "Player2", "description" : "Championship", "result" : "", "next" : "W", "move" : 2 }
@@ -129,3 +152,14 @@ switched to db mydb
 { "_id" : ObjectId("502ade4f6db6f53bef0faceb"), "game" : ObjectId("502ad7d46db6f53bef0face7"), "black" : "b8-c6", "move" : 2 }
 { "_id" : ObjectId("502ade966db6f53bef0facec"), "game" : ObjectId("502ad7d46db6f53bef0face7"), "white" : "f1-b5", "move" : 3 }
 > 
+
+
+
+DBObject obj = new BasicDBObject();
+obj.put("title", getTitle());
+obj.put("body", getBody());
+ 
+DBCollection coll = db.getCollection("note"));
+coll.save(obj);
+ 
+String idString = obj.get("_id").toString();
