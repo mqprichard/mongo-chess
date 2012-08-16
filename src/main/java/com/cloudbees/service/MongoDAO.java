@@ -56,106 +56,20 @@ public class MongoDAO {
 		return mongo;
 	}
 	
-	public DBCollection getGames() {
+	public DBCollection getGamesCollection() {
 		return games;
 	}
 
-	public DBCollection getMoves() {
+	public DBCollection getMovesCollection() {
 		return moves;
 	}
 
 	public void connect() {
-
-		Mongo m = null;
-		
 		try {
-			m = new Mongo( getMongoHost() , getMongoPort() );
-			DB db = m.getDB( getMongoDatabase() );
-			
 			this.mongo = new Mongo( getMongoHost() , getMongoPort() );
 			this.mongoDB = this.mongo.getDB( getMongoDatabase() );
-			this.games = db.getCollection(collGames);
-			this.moves = db.getCollection(collMoves);
-			
-			System.out.println("Connected to Mongo");
-			 
-			DBCollection games = db.getCollection("games"); 
-			BasicDBObject searchObject = new BasicDBObject();
-			BasicDBObject skipFields = new BasicDBObject();
-			skipFields.put("_id",0);
-			DBObject theGame;			
-			
-			DBCollection moves = db.getCollection("moves");       
-			BasicDBObject omits = new BasicDBObject();
-			omits.put("_id",0);
-			omits.put("game",0);
-			omits.put("move", 0);
-			
-			// Insert new game
-			DBObject obj = new BasicDBObject();
-			Game game = new Game("Fischer","Spassky","Championship Match");
-			obj.put("white", game.getWhite());
-			obj.put("black", game.getBlack());
-			obj.put("description", game.getDescription());
-			obj.put("result", game.getResult());
-			obj.put("next", game.getNext());
-			obj.put("move", game.getMove());
-			games.save(obj);
-			String idString = obj.get("_id").toString();
-			System.out.println(obj.toString());
-			System.out.println(idString);
-			
-			// Retrieve game object 
-			searchObject.put("_id", new ObjectId(idString));
-			theGame = games.findOne(searchObject,skipFields);
-			System.out.println(theGame.toString());
-
-			// Insert new moves
-			DBObject whiteObj = new BasicDBObject();
-			Move move = new Move("e2-e4", "", 1, idString);
-			whiteObj.put("white", move.getWhite());
-			whiteObj.put("game", new ObjectId(idString));
-			whiteObj.put("move", game.getMove());
-			moves.save(whiteObj);
-			System.out.println(whiteObj.get("_id").toString());	
-			DBObject blackObj = new BasicDBObject();
-			move = new Move("", "e7-e5", 1, idString);
-			blackObj.put("black", move.getBlack());
-			blackObj.put("game", new ObjectId(idString));
-			blackObj.put("move", game.getMove());
-			moves.save(blackObj);
-			System.out.println(blackObj.get("_id").toString());
-			
-			// Retrieve moves array
-			BasicDBObject findMoves = new BasicDBObject();
-			findMoves.put("game", new ObjectId(idString));			
-			List<DBObject> listMoves = moves.find(findMoves, omits).limit(200).toArray();
-			System.out.println(listMoves.toString());
-
-			// Update game { $set:{next:"B"} }
-			BasicDBObject query = new BasicDBObject();
-			query.put("_id", new ObjectId(idString));
-			BasicDBObject set = new BasicDBObject("$set", new BasicDBObject("next", "B")); 
-			games.update( query, set );
-			
-			// Retrieve game object 
-			searchObject.put("_id", new ObjectId(idString));
-			theGame = games.findOne(searchObject,skipFields);
-			System.out.println(theGame.toString());
-			
-			// Update game { $set:{next:"W"}, $inc:{move : 1} }
-			query = new BasicDBObject();
-			query.put("_id", new ObjectId(idString));
-			BasicDBObject changes = new BasicDBObject();
-			changes.put( "$set", new BasicDBObject("next", "W"));
-			changes.put( "$inc", new BasicDBObject("move", 1));
-			games.update( query, changes );
-			
-			// Retrieve game object 
-			searchObject.put("_id", new ObjectId(idString));
-			theGame = games.findOne(searchObject,skipFields);
-			System.out.println(theGame.toString());
-
+			this.games = this.getMongoDB().getCollection(collGames);
+			this.moves = this.getMongoDB().getCollection(collMoves);
 		} 
 		catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -169,7 +83,7 @@ public class MongoDAO {
 	
 	public String getGame( String idString ) {
 		
-		DBCollection games = getGames(); 
+		DBCollection games = getGamesCollection(); 
 		
 		// Search by object id
 		BasicDBObject searchObject = new BasicDBObject();
@@ -181,14 +95,13 @@ public class MongoDAO {
 		
 		// Retrieve game object and return
 		DBObject theGame = games.findOne(searchObject,skipFields);
-		System.out.println(theGame.toString());
 		
 		return theGame.toString();
 	}
 	
 	public String newGame( Game game ) {
 		
-		DBCollection games = getGames(); 
+		DBCollection games = getGamesCollection(); 
 		
 		DBObject obj = new BasicDBObject();
 		obj.put("white", game.getWhite());
@@ -204,7 +117,7 @@ public class MongoDAO {
 	
 	public void updateBlackToMove( String idString ) {
 
-		DBCollection games = getGames(); 
+		DBCollection games = getGamesCollection(); 
 		
 		// Update game { $set:{next:"B"} }
 		BasicDBObject query = new BasicDBObject();
@@ -215,7 +128,7 @@ public class MongoDAO {
 	
 	public void updateWhiteToMove( String idString ) {
 
-		DBCollection games = getGames(); 
+		DBCollection games = getGamesCollection(); 
 		
 		// Update game { $set:{next:"W"}, $inc:{move : 1} }
 		BasicDBObject query = new BasicDBObject();
@@ -228,7 +141,7 @@ public class MongoDAO {
 	
 	public String getNext( String idString ) {
 		
-		DBCollection games = getGames(); 
+		DBCollection games = getGamesCollection(); 
 		
 		// Search by object id
 		BasicDBObject searchObject = new BasicDBObject();
@@ -238,9 +151,21 @@ public class MongoDAO {
 		return theGame.get("next").toString();	
 	}
 	
+	public long getMoveNo( String idString ) {
+		
+		DBCollection games = getGamesCollection(); 
+		
+		// Search by object id
+		BasicDBObject searchObject = new BasicDBObject();
+		searchObject.put("_id", new ObjectId(idString));
+		DBObject theGame = games.findOne(searchObject);	
+		
+		return (Long.parseLong( theGame.get("move").toString() ) );	
+	}
+	
 	public String getMoves( String idString ) {
 		
-		DBCollection moves = getGames(); 
+		DBCollection moves = getMovesCollection(); 
 		 
 		// Omit object id, game and move from result
 		BasicDBObject omits = new BasicDBObject();
@@ -258,15 +183,19 @@ public class MongoDAO {
 
 	public String newMove( Move move ) {
 
-		DBCollection moves = getGames();      
-		
+		DBCollection moves = getMovesCollection();
 		DBObject moveObj = new BasicDBObject();
-		moveObj.put("white", move.getWhite());
-		moveObj.put("black", move.getBlack());
-		moveObj.put("game", new ObjectId(move.getGame()));
-		moveObj.put("move", move.getMove());
-		moves.save(moveObj);
 		
+		if ( ! move.getWhite().isEmpty() ){
+			moveObj.put( "white", move.getWhite() );
+		}
+		else {
+			moveObj.put( "black", move.getBlack() );
+		}
+		moveObj.put( "game", new ObjectId(move.getGame()) );
+		moveObj.put( "move", move.getMove() );
+		moves.save(moveObj);
+
 		return(moveObj.toString());
 	}
 }
