@@ -69,7 +69,7 @@ public class MongoDAO {
 		return moves;
 	}
 
-	public void connect() {
+	public void connect() throws Exception {
 		try {
 			mongo = new Mongo( getMongoHost() , getMongoPort() );
 			mongoDB = mongo.getDB( getMongoDatabase() );
@@ -77,32 +77,45 @@ public class MongoDAO {
 			moves = getMongoDB().getCollection(collMoves);
 			mongo.setWriteConcern(WriteConcern.SAFE);
 		} 
-		catch (UnknownHostException e) {
+		catch ( Exception e) {
 			e.printStackTrace();
-		} 
-		catch (MongoException e) {
-			e.printStackTrace();
-		}
-		finally {
+			throw e;
 		}
 	}
 	
 	public String getGame( String idString ) {
+		DBObject theGame = null;
+		String strReturn = null;
 		
-		DBCollection games = getGamesCollection(); 
+		try {
+			DBCollection games = getGamesCollection(); 
 		
-		// Search by object id
-		BasicDBObject searchObject = new BasicDBObject();
-		searchObject.put("_id", new ObjectId(idString));
+			// Search by object id
+			BasicDBObject searchObject = new BasicDBObject();
+			searchObject.put("_id", new ObjectId(idString));
 		
-		// Do not include _id field
-		BasicDBObject skipFields = new BasicDBObject();
-		skipFields.put("_id",0);
+			// Do not include _id field
+			BasicDBObject skipFields = new BasicDBObject();
+			skipFields.put("_id",0);
 		
-		// Retrieve game object and return
-		DBObject theGame = games.findOne(searchObject,skipFields);
-		
-		return theGame.toString();
+			// Retrieve game object and return
+			theGame = games.findOne(searchObject,skipFields);
+			strReturn = theGame.toString();
+		}
+		catch ( NullPointerException e ) {
+			e.printStackTrace();
+			
+			// Not Found: Servlet should return 400 Bad Request
+			strReturn = null;			
+		}
+		catch ( IllegalArgumentException e ) {
+			e.printStackTrace();
+			
+			// Invalid id: Servlet should return 400 Bad Request
+			strReturn = null;
+		}
+
+		return strReturn;
 	}
 	
 	public String newGame( Game game ) {
