@@ -13,6 +13,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
+import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 
 
@@ -70,10 +71,11 @@ public class MongoDAO {
 
 	public void connect() {
 		try {
-			this.mongo = new Mongo( getMongoHost() , getMongoPort() );
-			this.mongoDB = this.mongo.getDB( getMongoDatabase() );
-			this.games = this.getMongoDB().getCollection(collGames);
-			this.moves = this.getMongoDB().getCollection(collMoves);
+			mongo = new Mongo( getMongoHost() , getMongoPort() );
+			mongoDB = mongo.getDB( getMongoDatabase() );
+			games = getMongoDB().getCollection(collGames);
+			moves = getMongoDB().getCollection(collMoves);
+			mongo.setWriteConcern(WriteConcern.SAFE);
 		} 
 		catch (UnknownHostException e) {
 			e.printStackTrace();

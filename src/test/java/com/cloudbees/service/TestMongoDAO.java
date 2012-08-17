@@ -89,6 +89,9 @@ public class TestMongoDAO {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		finally {
+			dao.getMongo().close();
+		}
 	}
 
 	@Test
@@ -145,6 +148,9 @@ public class TestMongoDAO {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		finally {
+			dao.getMongo().close();
+		}		
 	}
 
 }
