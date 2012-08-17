@@ -2,6 +2,9 @@ package com.cloudbees.service;
 
 import java.net.UnknownHostException;
 import java.util.List;
+
+import org.bson.types.ObjectId;
+
 import com.cloudbees.model.Game;
 import com.cloudbees.model.Move;
 import com.mongodb.BasicDBObject;
@@ -10,7 +13,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
-import com.mongodb.ObjectId;
+
 
 public class MongoDAO {
 	
@@ -110,7 +113,7 @@ public class MongoDAO {
 		obj.put("result", game.getResult());
 		obj.put("next", game.getNext());
 		obj.put("move", game.getMove());		
-		games.save(obj);
+		games.insert(obj);
 		
 		return obj.toString();		
 	}

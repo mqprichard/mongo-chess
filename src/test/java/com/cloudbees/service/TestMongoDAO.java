@@ -2,10 +2,6 @@ package com.cloudbees.service;
 
 import static org.junit.Assert.*;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.junit.Test;
@@ -39,11 +35,12 @@ public class TestMongoDAO {
 		
 			// Validate JSON elements in response
 			String response = "{result:" + result.toString() + "}";
+			System.out.println( response );
 			JSONObject jObject;
 			jObject = new JSONObject(response);
 			JSONObject json = jObject.getJSONObject("result");
 			assertFalse( json == null );
-	
+			
 			assertEquals(json.getString("white"), testWhite);
 			assertEquals(json.getString("black"), testBlack);
 			assertEquals(json.getString("description"), testDescription);
@@ -51,7 +48,7 @@ public class TestMongoDAO {
 			assertEquals(json.getString("next"), testNext);
 			assertEquals(json.getLong("move"), testMove);	
 			
-			testId = json.getString("_id");
+			testId = json.getJSONObject("_id").getString( "$oid" );
 			assertFalse( testId.isEmpty() );
 		
 			// Get the game object back from MongoDB
@@ -134,7 +131,7 @@ public class TestMongoDAO {
 			assertEquals(json.getString("next"), testNext);
 			assertEquals(json.getLong("move"), testMove);	
 		
-			testId = json.getString("_id");
+			testId = json.getJSONObject("_id").getString( "$oid" );
 			assertFalse( testId.isEmpty() );
 	
 			// Get the game object back from MongoDB
@@ -151,8 +148,8 @@ public class TestMongoDAO {
 			assertFalse( json == null );
 			assertFalse( json.getString("_id").isEmpty() );
 			assertEquals( json.getString( "white" ), testWhiteMove );
-			assertEquals( json.getString( "game" ), testId);
-		
+			assertEquals( json.getJSONObject("game").getString( "$oid" ), testId);
+
 			// Black move
 			move.setWhite( "" );
 			move.setBlack( testBlackMove );
@@ -165,7 +162,7 @@ public class TestMongoDAO {
 			assertFalse( json == null );
 			assertFalse( json.getString("_id").isEmpty() );
 			assertEquals( json.getString( "black" ), testBlackMove );
-			assertEquals( json.getString( "game" ), testId);
+			assertEquals( json.getJSONObject("game").getString( "$oid" ), testId);
 			
 			// Get array of moves for game
 			result = dao.getMoves( testId );
