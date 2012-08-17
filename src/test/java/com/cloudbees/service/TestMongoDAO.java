@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.cloudbees.model.Game;
 import com.cloudbees.model.Move;
+import com.mongodb.WriteResult;
 
 public class TestMongoDAO {
 	private MongoDAO dao = new MongoDAO();
@@ -50,7 +51,8 @@ public class TestMongoDAO {
 			assertEquals(json.getLong("move"), testMove);		
 			
 			// Set game state: Black to move
-			dao.updateBlackToMove( testId );
+			WriteResult state = dao.updateBlackToMove( testId );
+			assertEquals( state.getError(), null );
 			
 			// Get the game object back from MongoDB
 			result = dao.getGame( testId );
@@ -67,7 +69,8 @@ public class TestMongoDAO {
 			assertEquals( dao.getMoveNo( testId ), 1L );
 			
 			// Set game state: White to move
-			dao.updateWhiteToMove( testId );
+			state = dao.updateWhiteToMove( testId );
+			assertEquals( state.getError(), null );
 			
 			// Get the game object back from MongoDB
 			result = dao.getGame( testId );

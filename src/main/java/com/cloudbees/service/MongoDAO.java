@@ -13,6 +13,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
+import com.mongodb.WriteResult;
 
 
 public class MongoDAO {
@@ -118,7 +119,7 @@ public class MongoDAO {
 		return obj.get("_id").toString();	
 	}
 	
-	public void updateBlackToMove( String idString ) {
+	public WriteResult updateBlackToMove( String idString ) {
 
 		DBCollection games = getGamesCollection(); 
 		
@@ -126,10 +127,10 @@ public class MongoDAO {
 		BasicDBObject query = new BasicDBObject();
 		query.put("_id", new ObjectId(idString));
 		BasicDBObject set = new BasicDBObject("$set", new BasicDBObject("next", "B")); 
-		games.update( query, set );
+		return games.update( query, set );
 	}
 	
-	public void updateWhiteToMove( String idString ) {
+	public WriteResult updateWhiteToMove( String idString ) {
 
 		DBCollection games = getGamesCollection(); 
 		
@@ -139,7 +140,7 @@ public class MongoDAO {
 		BasicDBObject changes = new BasicDBObject();
 		changes.put( "$set", new BasicDBObject("next", "W"));
 		changes.put( "$inc", new BasicDBObject("move", 1));
-		games.update( query, changes );
+		return games.update( query, changes );
 	}
 	
 	public String getNext( String idString ) {
