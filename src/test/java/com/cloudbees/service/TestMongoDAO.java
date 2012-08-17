@@ -30,34 +30,16 @@ public class TestMongoDAO {
 		
 			// Create new game
 			Game game = new Game( testWhite, testBlack, testDescription);
-			String result = dao.newGame(game);
-			assertFalse( result == null );
-		
-			// Validate JSON elements in response
-			String response = "{result:" + result.toString() + "}";
-			System.out.println( response );
-			JSONObject jObject;
-			jObject = new JSONObject(response);
-			JSONObject json = jObject.getJSONObject("result");
-			assertFalse( json == null );
-			
-			assertEquals(json.getString("white"), testWhite);
-			assertEquals(json.getString("black"), testBlack);
-			assertEquals(json.getString("description"), testDescription);
-			assertEquals(json.getString("result"), testResult);
-			assertEquals(json.getString("next"), testNext);
-			assertEquals(json.getLong("move"), testMove);	
-			
-			testId = json.getJSONObject("_id").getString( "$oid" );
+			testId  = dao.newGame(game);
 			assertFalse( testId.isEmpty() );
 		
 			// Get the game object back from MongoDB
-			result = dao.getGame( testId );
+			String result = dao.getGame( testId );
 			
 			// Validate JSON elements in response
-			response = "{result:" + result.toString() + "}";
-			jObject = new JSONObject(response);
-			json = jObject.getJSONObject("result");
+			String response = "{result:" + result.toString() + "}";
+			JSONObject jObject = new JSONObject(response);
+			JSONObject json = jObject.getJSONObject("result");
 			assertFalse( json == null );
 	
 			assertEquals(json.getString("white"), testWhite);
@@ -114,37 +96,17 @@ public class TestMongoDAO {
 	
 			// Create new game
 			Game game = new Game( testWhite, testBlack, testDescription);
-			String result = dao.newGame(game);
-			assertFalse( result == null );
-	
-			// Validate JSON elements in response
-			String response = "{result:" + result.toString() + "}";
-			JSONObject jObject;
-			jObject = new JSONObject(response);
-			JSONObject json = jObject.getJSONObject("result");
-			assertFalse( json == null );
-
-			assertEquals(json.getString("white"), testWhite);
-			assertEquals(json.getString("black"), testBlack);
-			assertEquals(json.getString("description"), testDescription);
-			assertEquals(json.getString("result"), testResult);
-			assertEquals(json.getString("next"), testNext);
-			assertEquals(json.getLong("move"), testMove);	
-		
-			testId = json.getJSONObject("_id").getString( "$oid" );
+			testId = dao.newGame(game);
 			assertFalse( testId.isEmpty() );
-	
-			// Get the game object back from MongoDB
-			result = dao.getGame( testId );
 		
 			// White move
 			Move move = new Move( testWhiteMove, "", 1L, testId );
-			result = dao.newMove( move );
+			String result = dao.newMove( move );
 
 			// Validate JSON elements in response
-			response = "{result:" + result.toString() + "}";
-			jObject = new JSONObject(response);
-			json = jObject.getJSONObject("result");
+			String response = "{result:" + result.toString() + "}";
+			JSONObject jObject = new JSONObject(response);
+			JSONObject json = jObject.getJSONObject("result");
 			assertFalse( json == null );
 			assertFalse( json.getString("_id").isEmpty() );
 			assertEquals( json.getString( "white" ), testWhiteMove );

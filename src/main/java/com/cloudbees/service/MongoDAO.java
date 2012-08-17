@@ -115,7 +115,7 @@ public class MongoDAO {
 		obj.put("move", game.getMove());		
 		games.insert(obj);
 		
-		return obj.toString();		
+		return obj.get("_id").toString();	
 	}
 	
 	public void updateBlackToMove( String idString ) {
