@@ -1,5 +1,8 @@
 package com.cloudbees.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Move {
 	protected String id;
 	protected String game;
