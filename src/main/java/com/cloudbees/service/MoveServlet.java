@@ -25,7 +25,7 @@ public class MoveServlet extends HttpServlet {
 	@GET
     @Path("{id}")	
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getMoves(@PathParam("id") long id ) {
+	public Response getMoves(@PathParam("game") String game ) {
 		
 		StatusType statusCode = null;
 		String msg = null;
@@ -33,6 +33,8 @@ public class MoveServlet extends HttpServlet {
 		try {			
 		    dao.connect();
 
+		    msg = dao.getMoves( game );
+		    statusCode = Response.Status.OK;
 		} 
 		catch (Exception e) {
 			e.printStackTrace();

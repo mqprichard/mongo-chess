@@ -19,6 +19,10 @@ public class TestMoveServlet {
 	private long testMoveNo = 0;
 	private String testWhiteMove = "";
 	private String testBlackMove = "";
+	
+	private String testMoves1W = "[{ \"white\" : \"e2-e4\"}]";
+	private String testMoves1B = "[{ \"white\" : \"e2-e4\"}, { \"black\" : \"e7-e5\"}]";
+	private String testMoves2W = "[{ \"white\" : \"e2-e4\"}, { \"black\" : \"e7-e5\"}, { \"white\" : \"d2-d4\"}]";
 
 	@Test
 	public void testMoveServlet() {
@@ -61,6 +65,12 @@ public class TestMoveServlet {
 			assertFalse( response == null );
 			assertEquals( response.getStatus(), Response.Status.OK.getStatusCode() );
 			
+			// Test getMoves()
+			response = moveServlet.getMoves( testGameId );
+			assertFalse( response == null );
+			assertEquals( response.getStatus(), Response.Status.OK.getStatusCode() );
+			assertEquals( response.getEntity().toString(), testMoves1W );
+			
 			// Test a black move
 			testWhiteMove = "";
 			testBlackMove = "e7-e5";
@@ -73,6 +83,12 @@ public class TestMoveServlet {
 			response = moveServlet.newMove( testMove );
 			assertFalse( response == null );
 			assertEquals( response.getStatus(), Response.Status.OK.getStatusCode() );
+			
+			// Test getMoves() 
+			response = moveServlet.getMoves( testGameId );
+			assertFalse( response == null );
+			assertEquals( response.getStatus(), Response.Status.OK.getStatusCode() );
+			assertEquals( response.getEntity().toString(), testMoves1B );
 			
 			// Error: move number out of sequence 
 			testWhiteMove = "e2-e4";
@@ -129,6 +145,11 @@ public class TestMoveServlet {
 			response = moveServlet.newMove( testMove );
 			assertFalse( response == null );
 			assertEquals( response.getStatus(), Response.Status.OK.getStatusCode() );
+			
+			response = moveServlet.getMoves( testGameId );
+			assertFalse( response == null );
+			assertEquals( response.getStatus(), Response.Status.OK.getStatusCode() );
+			assertEquals( response.getEntity().toString(), testMoves2W );
 		}
 		catch( Exception e ) {
 			e.printStackTrace();
