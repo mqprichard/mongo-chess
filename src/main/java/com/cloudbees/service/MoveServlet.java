@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response.StatusType;
 import com.cloudbees.model.Move;
 import com.google.gson.stream.JsonWriter;
 
+@Path("/moves")
 public class MoveServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
@@ -25,7 +26,7 @@ public class MoveServlet extends HttpServlet {
 	@GET
     @Path("{id}")	
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getMoves(@PathParam("game") String game ) {
+	public Response getMoves(@PathParam("id") String id ) {
 		
 		StatusType statusCode = null;
 		String msg = null;
@@ -33,7 +34,7 @@ public class MoveServlet extends HttpServlet {
 		try {			
 		    dao.connect();
 
-		    msg = dao.getMoves( game );
+		    msg = dao.getMoves( id );
 		    statusCode = Response.Status.OK;
 		} 
 		catch (Exception e) {
