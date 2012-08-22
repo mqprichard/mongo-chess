@@ -1,5 +1,8 @@
 package com.cloudbees.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Game {
 	protected long id;
 	protected String white;
