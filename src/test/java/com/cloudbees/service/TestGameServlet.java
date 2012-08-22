@@ -69,14 +69,18 @@ public class TestGameServlet {
 			assertEquals(json.getLong("move"), testMove);
 			
 			// Try to get game with invalid id
+			System.out.println( "Testing with malformed object id: IllegalArgumentException" );
 			response = gameServlet.getGame( badIdGarbage );
 			assertEquals( response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode() );
+			System.out.println( "Testing with empty object id: IllegalArgumentException" );
 			response = gameServlet.getGame( badIdEmpty );
 			assertEquals( response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode() );
+			System.out.println( "Testing with null object id: IllegalArgumentException" );
 			response = gameServlet.getGame( badIdNull );
 			assertEquals( response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode() );
 			
 			// Try to get game with non-existent id
+			System.out.println( "Testing with non-existent object id: NullPointerException" );
 			response = gameServlet.getGame( badIdNonExistent );
 			assertEquals( response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode() );
 		}
