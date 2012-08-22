@@ -1,6 +1,5 @@
 package com.cloudbees.service;
 
-import java.net.UnknownHostException;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -12,46 +11,22 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
-import com.mongodb.MongoException;
+import com.mongodb.MongoURI;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 
 
 public class MongoDAO {
 	
-	protected String mongoHost = "localhost";
-	protected int mongoPort = 27017;
-	protected String mongoDatabase = "mydb";
+	protected String strURI = "mongodb://cloudbees:6dce0b9d30f52ac73bfa74c492aa3382@alex.mongohq.com:10064/ELSfmlamgpGNTqD6jFEw";
+	//protected String strURI = "mongodb://guest:welcome1@localhost:27017/mydb";
+
 	protected DB mongoDB = null;
 	protected Mongo mongo = null;
 	protected DBCollection games = null;
 	protected DBCollection moves = null;
 	protected String collGames = "games";
 	protected String collMoves = "moves";
-
-	public String getMongoHost() {
-		return mongoHost;
-	}
-
-	public void setMongoHost(String mongoHost) {
-		this.mongoHost = mongoHost;
-	}
-
-	public int getMongoPort() {
-		return mongoPort;
-	}
-
-	public void setMongoPort(int mongoPort) {
-		this.mongoPort = mongoPort;
-	}
-
-	public String getMongoDatabase() {
-		return mongoDatabase;
-	}
-
-	public void setMongoDatabase(String mongoDatabase) {
-		this.mongoDatabase = mongoDatabase;
-	}
 	
 	public DB getMongoDB() {
 		return mongoDB;
@@ -71,11 +46,17 @@ public class MongoDAO {
 
 	public void connect() throws Exception {
 		try {
-			mongo = new Mongo( getMongoHost() , getMongoPort() );
-			mongoDB = mongo.getDB( getMongoDatabase() );
+
+			// Connect to Mongo and Authenticate
+		    MongoURI mongoURI = new MongoURI( strURI );
+		    mongo = new Mongo( mongoURI );
+		    mongoDB = mongo.getDB( mongoURI.getDatabase() );
+		    mongoDB.authenticate(mongoURI.getUsername(), mongoURI.getPassword());
+		    
+		    // Get Mongo collections and set WriteConcern
 			games = getMongoDB().getCollection(collGames);
 			moves = getMongoDB().getCollection(collMoves);
-			mongo.setWriteConcern(WriteConcern.SAFE);
+			mongoDB.setWriteConcern(WriteConcern.SAFE);
 		} 
 		catch ( Exception e) {
 			e.printStackTrace();

@@ -43,6 +43,7 @@ public class MoveServlet extends HttpServlet {
     		statusCode = Response.Status.INTERNAL_SERVER_ERROR;
 		}
 		finally {
+			dao.getMongo().close();
 		}
 		
 		if (statusCode != Response.Status.OK)
@@ -114,6 +115,7 @@ public class MoveServlet extends HttpServlet {
     		statusCode = Response.Status.INTERNAL_SERVER_ERROR;
 		}
 		finally {
+			dao.getMongo().close();
 		}
 	
 		if (statusCode != Response.Status.OK)

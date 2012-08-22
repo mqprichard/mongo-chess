@@ -151,6 +151,7 @@ public class TestMongoDAO {
 			fail();
 		}
 		finally {
+			// Normally GameServlet/MoveServlet call Mongo.close()
 			dao.getMongo().close();
 		}		
 	}

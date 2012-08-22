@@ -46,6 +46,9 @@ public class GameServlet extends HttpServlet {
 			// Others: Return 500 Internal Server Error
     		statusCode = Response.Status.INTERNAL_SERVER_ERROR;			
 		}
+		finally {
+			dao.getMongo().close();
+		}
 
 		if (statusCode != Response.Status.OK)
 			return Response.status(statusCode).build();
@@ -89,6 +92,7 @@ public class GameServlet extends HttpServlet {
     		statusCode = Response.Status.INTERNAL_SERVER_ERROR;
 		}
 		finally {
+			dao.getMongo().close();
 		}
 
 		if (statusCode != Response.Status.OK)
