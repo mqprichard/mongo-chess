@@ -1,0 +1,9 @@
+{ "white" : "Player1" , "black" : "Player2" , "description" : "Championship" , "result" : "" , "next" : "W" , "move" : 1}
+{"game":"GAME","move":1,"white":"e2-e4"}
+{"game":"GAME","move":1,"black":"e7-e5"}
+{"game":"GAME","move":2,"white":"f2-f4"}
+{"game":"GAME","move":2,"black":"e5xf4"}
+{"game":"GAME","move":3,"white":"g1-f3"}
+{"game":"GAME","move":3,"black":"g7-g5"}
+{ "white" : "Player1" , "black" : "Player2" , "description" : "Championship" , "result" : "" , "next" : "W" , "move" : 4}
+[{ "white" : "e2-e4"}, { "black" : "e7-e5"}, { "white" : "f2-f4"}, { "black" : "e5xf4"}, { "white" : "g1-f3"}, { "black" : "g7-g5"}]
