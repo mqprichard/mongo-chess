@@ -28,10 +28,11 @@ public class MongoDAO {
 	protected String collMoves = "moves";
 	
 	public MongoDAO() {
-		// Get MongoURI from system environment if defined
-		//envMongoURI = System.getProperty( "mongochess.mongoURI" );
-		//if (envMongoURI==null)
+		// Get MongoURI from system property/environment
+		envMongoURI = System.getProperty( "mongochess.mongoURI" );
+		if (envMongoURI==null)
 			envMongoURI = System.getenv( "mongochess.mongoURI" );
+		
 		if ( ! (envMongoURI == null) ) {
 			System.out.println( "Using MongoURI from system environment: " 
 								+ envMongoURI);
