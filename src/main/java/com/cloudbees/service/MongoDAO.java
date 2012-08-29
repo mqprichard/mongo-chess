@@ -50,7 +50,6 @@ public class MongoDAO {
 		try {
 			// Get MongoURI from system environment
 			if ( ! envMongoURI.isEmpty() ) {
-				strURI = envMongoURI;
 				System.out.println( "Using MongURI from system env: " + envMongoURI);
 			}
 
