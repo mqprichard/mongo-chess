@@ -18,8 +18,7 @@ import com.mongodb.WriteResult;
 
 public class MongoDAO {
 	
-	// Get MongoURI from system environment if defined
-	protected String envMongoURI = System.getProperty( "mongochess.mongoURI" );
+	protected String envMongoURI = "";
 	protected String strURI = "mongodb://cloudbees:6dce0b9d30f52ac73bfa74c492aa3382@alex.mongohq.com:10064/ELSfmlamgpGNTqD6jFEw";
 	//protected String strURI = "mongodb://guest:welcome1@localhost:27017/mydb";
 
@@ -48,9 +47,14 @@ public class MongoDAO {
 
 	public void connect() throws Exception {
 		try {
-			// Get MongoURI from system environment
-			if ( ! envMongoURI.isEmpty() ) {
-				System.out.println( "Using MongURI from system env: " + envMongoURI);
+			// Get MongoURI from system environment if defined
+			envMongoURI = System.getProperty( "mongochess.mongoURI" );
+			if ( ! (envMongoURI == null) ) {
+				System.out.println( "Using MongoURI from system environment: " + envMongoURI);
+				strURI = envMongoURI;
+			}
+			else {
+				System.out.println( "MongoURI system environment not set - " + "Using default: " + strURI);
 			}
 
 			// Connect to Mongo and Authenticate
