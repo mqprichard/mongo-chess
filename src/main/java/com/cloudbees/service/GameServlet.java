@@ -92,7 +92,8 @@ public class GameServlet extends HttpServlet {
     		statusCode = Response.Status.INTERNAL_SERVER_ERROR;
 		}
 		finally {
-			//dao.getMongo().close();
+			// Investigate
+			dao.getMongo().close();
 		}
 
 		if (statusCode != Response.Status.OK)
