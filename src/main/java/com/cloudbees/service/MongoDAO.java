@@ -29,9 +29,9 @@ public class MongoDAO {
 	
 	public MongoDAO() {
 		// Get MongoURI from system property/environment
-		envMongoURI = System.getProperty( "mongochess.mongoURI" );
+		envMongoURI = System.getProperty( "mongochess_mongoURI" );
 		if (envMongoURI==null)
-			envMongoURI = System.getenv( "mongochess.mongoURI" );
+			envMongoURI = System.getenv( "mongochess_mongoURI" );
 		
 		if ( ! (envMongoURI == null) ) {
 			System.out.println( "Using MongoURI from system environment: " 
