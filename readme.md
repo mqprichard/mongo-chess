@@ -1,1 +1,1 @@
-MongoDB version of REST chess server demo for Mobile CI with Jenkins Meetup at Yahoo!
+MongoDB version of REST chess server demo
