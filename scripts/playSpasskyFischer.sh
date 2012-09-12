@@ -23,8 +23,5 @@ sed s/GAME/$gameid/g templateSpasskyFischer.out > tmpSpasskyFischer.out
 chmod u+x tmpSpasskyFischer.sh
 
 diff <(./tmpSpasskyFischer.sh) tmpSpasskyFischer.out
-rm -f tmpSpasskyFischer.sh tmpSpasskyFischer.out
 
-curl -H "Accept: application/json" -X GET http://localhost:8080/chess/game/$gameid; echo
-curl -H "Accept: application/json" -X GET http://localhost:8080/chess/moves/$gameid; echo
  
