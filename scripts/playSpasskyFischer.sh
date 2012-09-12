@@ -14,7 +14,7 @@ jsonElement(){
         fi
 }
 
-newgame=`curl -s -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d '{"white":"Spassky","black":"Fischer","description":"Reykjavik Game 13"}' http://localhost:8080/chess/game/new`
+newgame=`curl -s -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d '{"white":"Spassky","black":"Fischer","description":"Reykjavik Game 13"}' http://chess.partnerdemo.cloudbees.net/chess/game/new`
 gameid=$(jsonElement "id" $newgame)
 
 sed s/GAME/$gameid/g templateSpasskyFischer.sh > tmpSpasskyFischer.sh
